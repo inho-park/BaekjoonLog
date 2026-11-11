@@ -1,15 +1,30 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        int[] dayOfend = new int[100];
-        int day = 0;
-        for(int i=0; i<progresses.length; i++) {
-            while(progresses[i] + (day*speeds[i]) < 100) {
-                day++;
-            }
-            dayOfend[day]++;
-        }
-        return Arrays.stream(dayOfend).filter(i -> i!=0).toArray();
+		Queue<Integer> queue = new LinkedList<>();
+		ArrayList<Integer> answerList = new ArrayList<>();
+		
+		for (int i = 0; i < progresses.length; i++) { 
+			int date = (int) Math.ceil((double) (100 - progresses[i]) / speeds[i]);
+			
+			if (!queue.isEmpty() && queue.peek() < date) {
+				answerList.add(queue.size());
+				queue.clear();
+			}
+			
+			queue.add(date);
+		}
+		
+		answerList.add(queue.size());
+		
+		int answer [] = new int [answerList.size()];
+		
+		for (int i = 0; i < answer.length; i++) {
+			answer[i] = answerList.get(i);
+		}
+		return answer;
     }
 }
