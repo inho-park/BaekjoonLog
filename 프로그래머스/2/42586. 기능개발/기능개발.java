@@ -1,29 +1,15 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 class Solution {
-	public int[] solution(int[] progresses, int[] speeds) {
-		ArrayList<Integer> arr = new ArrayList<>();
-		int idx = 0;
-		while (true) {
-			for (int i = idx; i < speeds.length; i++) {
-				progresses[i] += speeds[i];
-			}
-			int temp = 0;
-			for (int i = idx; i < speeds.length; i++) {
-				if (progresses[i] >= 100) {
-					temp++;
-					idx++;
-				} else {
-					break;
-				}
-			}
-			if (temp != 0) {
-				arr.add(temp);
-			}
-			if (idx == speeds.length) {
-				break;
-			}
-		}
-		return arr.parallelStream().mapToInt(Integer::intValue).toArray();
-	}
+    public int[] solution(int[] progresses, int[] speeds) {
+        int[] dayOfend = new int[100];
+        int day = 0;
+        for(int i=0; i<progresses.length; i++) {
+            while(progresses[i] + (day*speeds[i]) < 100) {
+                day++;
+            }
+            dayOfend[day]++;
+        }
+        return Arrays.stream(dayOfend).filter(i -> i!=0).toArray();
+    }
 }
